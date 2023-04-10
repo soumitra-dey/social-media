@@ -1,4 +1,5 @@
 const userModel = require("../models/user.model");
+const postModel = require("../models/post.model")
 
 const postUser = async (req, res) => {
   const { name, email, bio } = req.body;
@@ -51,6 +52,7 @@ const deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
       let user = await userModel.findByIdAndDelete(id)
+      await postModel.deleteMany({user_id:id})
       res.status(200).send("User Deleted");
     } catch (e) {
       res.status(400).send("Something went wrong");
